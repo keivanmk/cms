@@ -1,4 +1,6 @@
 {
+    "name": "DDDBlog",
+    "description": "A blog project with many features based on ddd approach",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
