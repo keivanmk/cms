@@ -1,0 +1,43 @@
+version: '3.9'
+services:
+  webserver:
+    container_name: symfony_app_webserver
+    build:
+      context: ./docker/nginx/local
+    ports:
+      - "8001:80"
+    volumes:
+      - ./:/var/www/app
+    depends_on:
+      - fpm
+  fpm:
+    container_name: symfony_app_fpm
+    build:
+      context: .
+      dockerfile: ./docker/php/local/Dockerfile
+    volumes:
+      - ./:/var/www/app
+      - ./docker/php/local/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/php/local/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    depends_on:
+      - db
+      - redis
+  db:
+    image: mysql:5.7.4
+    container_name: symfony_app_db
+    environment:
+      - MYSQL_DATABASE=symfony
+      - MYSQL_USER=symfony
+      - MYSQL_PASSWORD=symfony
+      - MYSQL_ROOT_PASSWORD=''
+      - TZ=Asia/Tehran
+    volumes:
+      - db:/var/lib/mysql
+  redis:
+    image: redis:alpine
+    container_name: symfony_app_redis
+    volumes:
+      - redis:/data
+volumes:
+  db:
+  redis:

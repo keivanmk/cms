@@ -1,0 +1,13 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+    <entity name="App\Content\Domain\Post" table="posts">
+        <id name="Id" column="Id" type="PostId">
+            <generator strategy="NONE"/>
+        </id>
+        <field name="title" type="string"/>
+        <field name="content" type="string"/>
+        <embedded use-column-prefix="false" name="status" class="App\Content\Domain\PostStatus"/>
+    </entity>
+</doctrine-mapping>

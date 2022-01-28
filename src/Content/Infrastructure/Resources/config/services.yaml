@@ -1,0 +1,4 @@
+parameters:
+services:
+  App\Content\Infrastructure\Doctrine\DoctrinePostRepository: ~
+  App\Content\Domain\PostRepositoryInterface: '@App\Content\Infrastructure\Doctrine\DoctrinePostRepository'
