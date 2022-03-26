@@ -38,6 +38,15 @@ services:
     container_name: symfony_app_redis
     volumes:
       - redis:/data
+  dbadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: symfony_db_admin
+    depends_on:
+      - db
+    ports:
+      - "8002:80"
+    environment:
+      - PMA_ARBITARY=1
 volumes:
   db:
   redis:
