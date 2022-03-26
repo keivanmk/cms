@@ -1,5 +1,5 @@
 {
-    "name": "DDDBlog",
+    "name": "kayvanalimohammadi/dddblog",
     "description": "A blog project with many features based on ddd approach",
     "type": "project",
     "license": "proprietary",
@@ -19,8 +19,10 @@
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "5.3.*",
         "symfony/maker-bundle": "^1.34",
+        "symfony/monolog-bundle": "^3.7",
         "symfony/proxy-manager-bridge": "5.3.*",
         "symfony/runtime": "5.3.*",
+        "symfony/validator": "5.3.*",
         "symfony/yaml": "5.3.*"
     },
     "require-dev": {
