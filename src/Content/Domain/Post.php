@@ -10,12 +10,17 @@ class Post
     private string $title;
     private string $content;
     private PostStatus $status;
+    private \DateTime $createdAt;
+    private \DateTime $updatedAt;
+
     public function __construct(PostId $Id,string $title,string $content)
     {
         $this->Id = $Id;
         $this->title = $title;
         $this->content = $content;
         $this->status = PostStatus::DRAFT();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public static function draft(string $title, string $content):self

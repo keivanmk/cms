@@ -16,7 +16,7 @@ class DraftPost
         $this->postRepository = $postRepository;
     }
 
-    public function execute(DraftPostRequest $request)
+    public function execute(DraftPostRequest $request):void
     {
         $post = Post::draft($request->title(),$request->content());
         $this->postRepository->save($post);
