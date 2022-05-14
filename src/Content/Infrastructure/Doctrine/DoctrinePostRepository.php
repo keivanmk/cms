@@ -1,25 +1,24 @@
 <?php
 
 namespace App\Content\Infrastructure\Doctrine;
+
 use App\Content\Domain\Post;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Content\Domain\PostRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityRepository;
 
-class DoctrinePostRepository implements PostRepositoryInterface
+class DoctrinePostRepository extends ServiceEntityRepository implements PostRepositoryInterface
 {
-    private readonly EntityManagerInterface $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this->entityManager = $entityManager;
+        parent::__construct($managerRegistry,Post::class);
     }
 
     public function save(Post $post)
     {
-        $this->entityManager->persist($post);
-        $this->entityManager->flush();
+        $this->_em->persist($post);
+        $this->_em->flush();
     }
 }

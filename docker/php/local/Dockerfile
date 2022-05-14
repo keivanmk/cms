@@ -4,7 +4,7 @@ RUN apt-get -y update && apt-get install --no-install-recommends -y zlib1g-dev l
 
 RUN pecl install redis-5.3.6 xdebug-3.1.2 && docker-php-ext-enable redis xdebug
 
-RUN docker-php-ext-install sockets pdo_mysql zip && docker-php-ext-enable sockets pdo_mysql zip
+RUN docker-php-ext-install sockets pdo_mysql zip xml && docker-php-ext-enable sockets pdo_mysql zip xml
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

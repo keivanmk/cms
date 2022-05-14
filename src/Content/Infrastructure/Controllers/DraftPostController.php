@@ -5,25 +5,44 @@ namespace App\Content\Infrastructure\Controllers;
 use App\Content\UseCases\DraftPost;
 use App\Content\UseCases\DraftPostRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DraftPostController extends AbstractController
 {
-    private readonly DraftPost $draftPost;
-
     /**
      * @param DraftPost $draftPost
+     * @param ValidatorInterface $validator
      */
-    public function __construct(DraftPost $draftPost)
+    public function __construct(
+        private readonly DraftPost $draftPost,
+        private readonly ValidatorInterface $validator
+    )
     {
-        $this->draftPost = $draftPost;
     }
 
-    #[Route('/posts', name: 'posts_list')]
-    public function index(): Response
+    #[Route('/posts', name: 'draft_a_post',methods: 'POST')]
+    public function index(Request $request): Response
     {
-        $this->draftPost->execute(new DraftPostRequest('new post from me','test content'));
-        return $this->json(['success' => true, 'data' => []]);
+        $errors = $this->validateDraftPostRequest($request);
+        if($errors->count()){
+            return  $this->json(['message' => $errors[0]->getMessage()],422);
+        }
+        $this->draftPost->execute(new DraftPostRequest($request->get('title'),$request->get('content')));
+        return $this->json(['success' => true, 'message' => 'مطلب جدید با موفقیت اضافه شد']);
+    }
+
+    /**
+     * @param Request $request
+     * @return ConstraintViolationListInterface
+     */
+    private function validateDraftPostRequest(Request $request): ConstraintViolationListInterface
+    {
+        return $this->validator->validate(['title' => $request->get('title'), 'content' => $request->get('content')], new Collection(['title' => new NotBlank(message: 'عنوان نمی تواند خالی باشد'), 'content' => new NotBlank(message: 'محتوای مطلب نمی تواند خالی باشد')]));
     }
 }

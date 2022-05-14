@@ -29,7 +29,7 @@ services:
       - MYSQL_DATABASE=symfony
       - MYSQL_USER=symfony
       - MYSQL_PASSWORD=symfony
-      - MYSQL_ROOT_PASSWORD=''
+      - MYSQL_ROOT_PASSWORD=root
       - TZ=Asia/Tehran
     volumes:
       - db:/var/lib/mysql
@@ -38,7 +38,7 @@ services:
     container_name: symfony_app_redis
     volumes:
       - redis:/data
-  dbadmin:
+  db_admin:
     image: phpmyadmin/phpmyadmin
     container_name: symfony_db_admin
     depends_on:
