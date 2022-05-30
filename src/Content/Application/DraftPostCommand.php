@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Content\UseCases;
-class DraftPostRequest
-{
-    private $title;
+namespace App\Content\Application;
 
-    private $content;
+use App\Shared\Application\AsyncCommand;
+
+final class DraftPostCommand implements AsyncCommand
+{
+    private string $title;
+
+    private string $content;
 
     /**
      * @param string $title
@@ -17,12 +20,12 @@ class DraftPostRequest
         $this->content = $content;
     }
 
-    public function title():string
+    public function title(): string
     {
         return $this->title;
     }
 
-    public function content():string
+    public function content(): string
     {
         return $this->content;
     }

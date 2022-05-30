@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Content\UseCases;
+namespace App\Content\Application;
+
 use App\Content\Domain\Post;
 use App\Content\Domain\PostRepositoryInterface;
+use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-class DraftPost
+final class DraftPostHandler implements MessageHandlerInterface
 {
     private PostRepositoryInterface $postRepository;
 
@@ -16,9 +18,9 @@ class DraftPost
         $this->postRepository = $postRepository;
     }
 
-    public function execute(DraftPostRequest $request):void
+    public function __invoke(DraftPostCommand $request): void
     {
-        $post = Post::draft($request->title(),$request->content());
+        $post = Post::draft($request->title(), $request->content());
         $this->postRepository->save($post);
     }
 }
