@@ -5,8 +5,8 @@ namespace App\Tests\Integration\Post;
 use App\Content\Domain\Post;
 use App\Tests\Shared\IntegrationTestCase;
 use App\Content\Domain\PostRepositoryInterface;
-use App\Content\UseCases\DraftPost;
-use App\Content\UseCases\DraftPostRequest;
+use App\Content\Application\DraftPostHandler;
+use App\Content\Application\DraftPostCommand;
 
 class DraftPostTest extends IntegrationTestCase
 {
@@ -15,8 +15,8 @@ class DraftPostTest extends IntegrationTestCase
     {
         /** @var PostRepositoryInterface $postRepository */
         $postRepository = $this->em->getRepository('ContentBundle:Post');
-        $draftPostRequest = new DraftPostRequest('sample title', 'sample content');
-        $sut = new DraftPost($postRepository);
+        $draftPostRequest = new DraftPostCommand('sample title', 'sample content');
+        $sut = new DraftPostHandler($postRepository);
         //act
         $sut->execute($draftPostRequest);
         //assert

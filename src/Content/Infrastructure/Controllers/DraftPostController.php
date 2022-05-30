@@ -2,8 +2,10 @@
 
 namespace App\Content\Infrastructure\Controllers;
 
-use App\Content\UseCases\DraftPost;
-use App\Content\UseCases\DraftPostRequest;
+use App\Shared\Application\CommandBus;
+use App\Content\Application\DraftPostHandler;
+use App\Content\Application\DraftPostCommand;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,15 +15,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class DraftPostController extends AbstractController
+final class DraftPostController extends AbstractController
 {
     /**
-     * @param DraftPost $draftPost
+     * @param DraftPostHandler $draftPost
      * @param ValidatorInterface $validator
+     * @param CommandBus $messageBus
      */
     public function __construct(
-        private readonly DraftPost $draftPost,
-        private readonly ValidatorInterface $validator
+        private readonly DraftPostHandler   $draftPost,
+        private readonly ValidatorInterface $validator,
+        private readonly CommandBus $messageBus
     )
     {
     }
@@ -33,7 +37,8 @@ class DraftPostController extends AbstractController
         if($errors->count()){
             return  $this->json(['message' => $errors[0]->getMessage()],422);
         }
-        $this->draftPost->execute(new DraftPostRequest($request->get('title'),$request->get('content')));
+//        $this->draftPost->execute(new DraftPostCommand($request->get('title'),$request->get('content')));
+        $this->messageBus->dispatch(new DraftPostCommand($request->get('title'),$request->get('content')));
         return $this->json(['success' => true, 'message' => 'مطلب جدید با موفقیت اضافه شد']);
     }
 

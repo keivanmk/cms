@@ -47,6 +47,15 @@ services:
       - "8002:80"
     environment:
       - PMA_ARBITARY=1
+  message_broker:
+    image: rabbitmq:3.10-management
+    container_name: symfony_message_broker
+    ports:
+      - "8080:15672"
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
 volumes:
   db:
   redis:
