@@ -2,7 +2,8 @@
 
 namespace App\Content\Application;
 
-use App\Shared\Application\AsyncCommand;
+
+use App\Framework\Application\Command\AsyncCommand;
 
 final class DraftPostCommand implements AsyncCommand
 {

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Content\Domain;
-use App\Shared\Domain\Enum;
+
+use App\Framework\Domain\Enum;
 
 /**
  * * @method static static DRAFT()

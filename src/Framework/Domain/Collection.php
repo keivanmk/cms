@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Shared\Domain;
+namespace App\Framework\Domain;
 use Webmozart\Assert\Assert;
 
 abstract class Collection implements \Countable,\IteratorAggregate

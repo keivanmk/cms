@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Domain;
+namespace App\Framework\Domain;
 class Enum
 {
     protected $value;
