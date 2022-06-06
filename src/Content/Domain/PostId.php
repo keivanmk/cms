@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Content\Domain;
-use App\Shared\Domain\UUID;
+
+use App\Framework\Domain\UUID;
 
 final class PostId extends UUID
 {

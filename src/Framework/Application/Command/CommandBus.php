@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared\Application;
+namespace App\Framework\Application\Command;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
