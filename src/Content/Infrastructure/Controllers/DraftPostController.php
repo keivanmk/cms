@@ -2,9 +2,9 @@
 
 namespace App\Content\Infrastructure\Controllers;
 
-use App\Shared\Application\CommandBus;
 use App\Content\Application\DraftPostHandler;
 use App\Content\Application\DraftPostCommand;
+use App\Framework\Application\Command\CommandBus;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,6 @@ final class DraftPostController extends AbstractController
      * @param CommandBus $messageBus
      */
     public function __construct(
-        private readonly DraftPostHandler   $draftPost,
         private readonly ValidatorInterface $validator,
         private readonly CommandBus $messageBus
     )
@@ -37,7 +36,6 @@ final class DraftPostController extends AbstractController
         if($errors->count()){
             return  $this->json(['message' => $errors[0]->getMessage()],422);
         }
-//        $this->draftPost->execute(new DraftPostCommand($request->get('title'),$request->get('content')));
         $this->messageBus->dispatch(new DraftPostCommand($request->get('title'),$request->get('content')));
         return $this->json(['success' => true, 'message' => 'مطلب جدید با موفقیت اضافه شد']);
     }

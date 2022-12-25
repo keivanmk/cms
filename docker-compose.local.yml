@@ -1,7 +1,8 @@
 version: '3.9'
 services:
   webserver:
-    container_name: symfony_app_webserver
+    container_name: cms_app_webserver
+    hostname: webServer
     build:
       context: ./docker/nginx/local
     ports:
@@ -10,8 +11,12 @@ services:
       - ./:/var/www/app
     depends_on:
       - fpm
+    restart: unless-stopped
+    networks:
+      - cms_app
   fpm:
-    container_name: symfony_app_fpm
+    container_name: cms_app_fpm
+    hostname: application
     build:
       context: .
       dockerfile: ./docker/php/local/Dockerfile
@@ -22,40 +27,60 @@ services:
     depends_on:
       - db
       - redis
+    restart: unless-stopped
+    networks:
+      - cms_app
   db:
     image: mysql:5.7.4
-    container_name: symfony_app_db
+    hostname: database
+    container_name: cms_app_db
     environment:
-      - MYSQL_DATABASE=symfony
-      - MYSQL_USER=symfony
-      - MYSQL_PASSWORD=symfony
+      - MYSQL_DATABASE=cms
+      - MYSQL_USER=cms_admin
+      - MYSQL_PASSWORD=cms
       - MYSQL_ROOT_PASSWORD=root
       - TZ=Asia/Tehran
     volumes:
       - db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - cms_app
   redis:
     image: redis:alpine
-    container_name: symfony_app_redis
+    hostname: redis
+    container_name: cms_app_redis
     volumes:
       - redis:/data
+    restart: unless-stopped
+    networks:
+      - cms_app
   db_admin:
     image: phpmyadmin/phpmyadmin
-    container_name: symfony_db_admin
+    hostname: phpmyadmin
+    container_name: cms_db_admin
     depends_on:
       - db
     ports:
-      - "8002:80"
+      - "8010:80"
     environment:
       - PMA_ARBITARY=1
-  message_broker:
+    restart: unless-stopped
+    networks:
+      - cms_app
+  rabbitmq:
     image: rabbitmq:3.10-management
-    container_name: symfony_message_broker
+    hostname: message-broker
+    container_name: cms_message_broker
     ports:
-      - "8080:15672"
+      - "8090:15672"
     restart: unless-stopped
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
+    networks:
+      - cms_app
 volumes:
   db:
   redis:
+networks:
+  cms_app:
