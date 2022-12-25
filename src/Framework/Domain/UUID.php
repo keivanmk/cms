@@ -10,7 +10,7 @@ abstract class UUID
         $this->validate($this->value);
     }
 
-    public static function generate(): self
+    public static function nextId(): self
     {
         return new static(\Ramsey\Uuid\Uuid::uuid4()->toString());
     }

@@ -2,10 +2,14 @@
 declare(strict_types=1);
 
 namespace App\Content\Domain;
+use App\Content\Domain\Events\PostPublished;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Framework\Domain\EventRecordingCapabilities;
 
 class Post
 {
+    use EventRecordingCapabilities;
+
     private PostId $Id;
     private string $title;
     private string $content;
@@ -23,9 +27,23 @@ class Post
         $this->updatedAt = new \DateTime();
     }
 
-    public static function draft(string $title, string $content):self
+    public static function draft(PostId $Id,string $title,string $content):Post
     {
-        return new static(PostId::generate(),$title,$content);
+        return new Post($Id,$title,$content);
+    }
+    public function changeTitle(string $newTitle):void
+    {
+        $this->title = $newTitle;
+    }
+
+    public function changeContent(string $newContent): void
+    {
+        $this->content = $newContent;
+    }
+
+    public function publish():void{
+        $this->status = PostStatus::PUBLISHED();
+        $this->record(PostPublished::create($this->Id,$this->title,$this->content));
     }
 
     public function status():PostStatus
@@ -33,19 +51,9 @@ class Post
         return $this->status;
     }
 
-    public function changeTitle(string $newTitle):void
-    {
-        $this->title = $newTitle;
-    }
-
     public function title(): string
     {
         return $this->title;
-    }
-
-    public function changeContent(string $newContent)
-    {
-        $this->content = $newContent;
     }
 
     public function content():string
@@ -56,6 +64,16 @@ class Post
     public function Id():PostId
     {
         return $this->Id;
+    }
+
+    public function isPublished():bool
+    {
+        return  $this->status->is(PostStatus::PUBLISHED());
+    }
+
+    public function isDraft():bool
+    {
+        return  $this->status->is(PostStatus::DRAFT());
     }
 
 }

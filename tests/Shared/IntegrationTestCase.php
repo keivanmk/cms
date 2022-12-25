@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Tests\Shared;
+use Faker\Factory;
+use Faker\Generator;
 use PHPUnit\Framework\TestCase;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -22,5 +24,10 @@ class IntegrationTestCase extends KernelTestCase
         $this->em->rollback();
         parent::tearDown();
 
+    }
+
+    protected function faker(): Generator
+    {
+        return Factory::create();
     }
 }

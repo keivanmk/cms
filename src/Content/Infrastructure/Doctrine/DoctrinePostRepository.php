@@ -3,6 +3,7 @@
 namespace App\Content\Infrastructure\Doctrine;
 
 use App\Content\Domain\Post;
+use App\Content\Domain\PostId;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Content\Domain\PostRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -14,6 +15,11 @@ class DoctrinePostRepository extends ServiceEntityRepository implements PostRepo
     public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct($managerRegistry,Post::class);
+    }
+
+    public function ofId(PostId $postId):Post
+    {
+        return  $this->find($postId);
     }
 
     public function save(Post $post)

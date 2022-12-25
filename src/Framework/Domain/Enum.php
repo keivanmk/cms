@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Framework\Domain;
+use Exception;
+
 class Enum
 {
     protected $value;
@@ -16,7 +18,7 @@ class Enum
         if (isset($constants[$name])) {
             return new static($constants[$name]);
         }
-        throw new Exception("{$name} not found");
+        throw new \InvalidArgumentException("{$name} not found");
     }
 
     protected static function constants(): array

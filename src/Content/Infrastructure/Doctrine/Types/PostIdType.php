@@ -8,10 +8,10 @@ use Doctrine\DBAL\Types\Type;
 
 class PostIdType extends Type
 {
-
+    private const TYPE = 'id';
     public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {
-        return 'id';
+        return $platform->getStringTypeDeclarationSQL($column);
     }
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
@@ -26,6 +26,6 @@ class PostIdType extends Type
 
     public function getName(): string
     {
-        return 'id';
+        return self::TYPE;
     }
 }

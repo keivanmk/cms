@@ -8,14 +8,24 @@ framework:
         default_middleware: allow_no_handlers
       command.bus:
         middleware:
+          - doctrine_ping_connection
+          - doctrine_close_connection
           - doctrine_transaction
+      event.bus:
+        default_middleware: allow_no_handlers
+        middleware:
+          - validation
+
 
     transports:
       # https://symfony.com/doc/current/messenger.html#transport-configuration
-      async: '%env(MESSENGER_TRANSPORT_DSN)%'
+      command_async: '%env(MESSENGER_TRANSPORT_DSN)%'
       # failed: 'doctrine://default?queue_name=failed'
       # sync: 'sync://'
+      events_async: '%env(MESSENGER_TRANSPORT_DSN)%/events'
+      events_sync: 'sync://'
 
     routing:
       # Route your messages to the transports
-      'App\Shared\Application\AsyncCommand': async
+      'App\Framework\Application\Command\AsyncCommand': command_async
+      'App\Framework\Domain\DomainEvent': events_async
