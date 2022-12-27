@@ -9,17 +9,17 @@ use Doctrine\DBAL\Types\Type;
 class PostIdType extends Type
 {
     private const TYPE = 'id';
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getStringTypeDeclarationSQL($column);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform):mixed
     {
         return $value->value();
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): PostId
     {
         return new PostId($value);
     }

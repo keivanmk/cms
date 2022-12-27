@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Content\Application;
+namespace App\Content\Application\DraftPost;
 
 
+use App\Framework\Application\Command\Command;
 use App\Framework\Application\Command\AsyncCommand;
 
-final class DraftPostCommand implements AsyncCommand
+final class DraftPostCommand implements Command
 {
     private string $title;
 

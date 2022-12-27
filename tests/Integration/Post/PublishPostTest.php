@@ -4,12 +4,12 @@ namespace App\Tests\Integration\Post;
 use App\Content\Domain\Post;
 use App\Content\Domain\PostId;
 use App\Tests\Shared\IntegrationTestCase;
-use App\Content\Application\DraftPostCommand;
+use App\Content\Application\DraftPost\DraftPostCommand;
 use App\Framework\Application\Event\EventBus;
-use App\Content\Application\DraftPostHandler;
+use App\Content\Application\DraftPost\DraftPostHandler;
 use App\Content\Domain\PostRepositoryInterface;
-use App\Content\Application\PublishPostCommand;
-use App\Content\Application\PublishPostHandler;
+use App\Content\Application\PublishPost\PublishPostCommand;
+use App\Content\Application\PublishPost\PublishPostHandler;
 
 class PublishPostTest extends IntegrationTestCase
 {
@@ -18,7 +18,7 @@ class PublishPostTest extends IntegrationTestCase
     {
         //arrange
         /** @var PostRepositoryInterface $postRepository */
-        $postRepository = $this->em->getRepository('ContentBundle:Post');
+        $postRepository = $this->container->get('App\Content\Domain\PostRepositoryInterface');
         $eventBus = \Mockery::spy(EventBus::class);
         $newPostId = PostId::nextId();
         $draftPost = Post::draft($newPostId,$this->faker()->sentence(),$this->faker()->sentence());
