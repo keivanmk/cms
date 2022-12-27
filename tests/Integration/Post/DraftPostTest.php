@@ -7,8 +7,8 @@ use App\Content\Domain\Post;
 use App\Tests\Shared\IntegrationTestCase;
 use App\Framework\Application\Event\EventBus;
 use App\Content\Domain\PostRepositoryInterface;
-use App\Content\Application\DraftPostHandler;
-use App\Content\Application\DraftPostCommand;
+use App\Content\Application\DraftPost\DraftPostHandler;
+use App\Content\Application\DraftPost\DraftPostCommand;
 
 class DraftPostTest extends IntegrationTestCase
 {
@@ -17,8 +17,9 @@ class DraftPostTest extends IntegrationTestCase
     {
         //arrange
         /** @var PostRepositoryInterface $postRepository */
-        $postRepository = $this->em->getRepository('ContentBundle:Post');
-        $draftPostRequest = new DraftPostCommand('sample title', 'sample content');
+        $postRepository = $this->container->get('App\Content\Domain\PostRepositoryInterface');
+        $expectedTitle = $this->faker()->sentence();
+        $draftPostRequest = new DraftPostCommand($expectedTitle, $this->faker()->sentence());
         $eventBus = \Mockery::spy(EventBus::class);
         $sut = new DraftPostHandler($postRepository,$eventBus);
 
@@ -26,8 +27,8 @@ class DraftPostTest extends IntegrationTestCase
         $sut($draftPostRequest);
 
         //assert
-        $post = $postRepository->findOneBy(['title' => 'sample title']);
+        $post = $postRepository->findOneBy(['title' => $expectedTitle]);
         $this->assertInstanceOf(Post::class, $post);
-        $this->assertEquals('sample title', $post->title());
+        $this->assertEquals($expectedTitle, $post->title());
     }
 }

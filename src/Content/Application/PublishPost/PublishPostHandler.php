@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Content\Application;
+namespace App\Content\Application\PublishPost;
 use App\Content\Domain\Post;
 use App\Content\Domain\PostId;
 use App\Content\Domain\Events\PostPublished;
 use App\Framework\Application\Event\EventBus;
 use App\Content\Domain\PostRepositoryInterface;
+use App\Framework\Application\Command\CommandHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-final class PublishPostHandler implements MessageHandlerInterface
+final class PublishPostHandler implements CommandHandler
 {
 
     public function __construct(

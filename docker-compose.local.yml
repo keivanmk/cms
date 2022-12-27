@@ -1,10 +1,11 @@
 version: '3.9'
 services:
   webserver:
-    container_name: cms_app_webserver
-    hostname: webServer
-    build:
-      context: ./docker/nginx/local
+    container_name: cms_webserver
+    hostname: web-server
+#    build:
+#      context: ./docker/nginx/local
+    image: cms_webserver:latest
     ports:
       - "8001:80"
     volumes:
@@ -15,11 +16,12 @@ services:
     networks:
       - cms_app
   fpm:
-    container_name: cms_app_fpm
+    container_name: cms_app
     hostname: application
-    build:
-      context: .
-      dockerfile: ./docker/php/local/Dockerfile
+#    build:
+#      context: .
+#      dockerfile: ./docker/php/local/Dockerfile
+    image: cms_fpm:latest
     volumes:
       - ./:/var/www/app
       - ./docker/php/local/php.ini:/usr/local/etc/php/php.ini
@@ -27,13 +29,14 @@ services:
     depends_on:
       - db
       - redis
+      - rabbitmq
     restart: unless-stopped
     networks:
       - cms_app
   db:
     image: mysql:5.7.4
     hostname: database
-    container_name: cms_app_db
+    container_name: cms_db
     environment:
       - MYSQL_DATABASE=cms
       - MYSQL_USER=cms_admin
@@ -48,7 +51,7 @@ services:
   redis:
     image: redis:alpine
     hostname: redis
-    container_name: cms_app_redis
+    container_name: cms_redis
     volumes:
       - redis:/data
     restart: unless-stopped

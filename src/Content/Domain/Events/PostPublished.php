@@ -8,9 +8,9 @@ use App\Framework\Domain\DomainEvent;
 final class PostPublished implements DomainEvent
 {
     private function __construct(
-        private string $postId,
-        private string $postTitle,
-        private string $postContent
+        private readonly string $postId,
+        private readonly string $postTitle,
+        private readonly string $postContent
     )
     {}
 

@@ -16,10 +16,10 @@ framework:
         middleware:
           - validation
 
-
     transports:
       # https://symfony.com/doc/current/messenger.html#transport-configuration
-      command_async: '%env(MESSENGER_TRANSPORT_DSN)%'
+      command_async: '%env(MESSENGER_TRANSPORT_DSN)%/commands'
+      command_sync: 'sync://'
       # failed: 'doctrine://default?queue_name=failed'
       # sync: 'sync://'
       events_async: '%env(MESSENGER_TRANSPORT_DSN)%/events'
@@ -28,4 +28,5 @@ framework:
     routing:
       # Route your messages to the transports
       'App\Framework\Application\Command\AsyncCommand': command_async
+      'App\Framework\Application\Command\Command': command_sync
       'App\Framework\Domain\DomainEvent': events_async

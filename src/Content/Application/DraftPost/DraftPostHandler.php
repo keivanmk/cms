@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Content\Application;
+namespace App\Content\Application\DraftPost;
 
 use App\Content\Domain\Post;
 use App\Content\Domain\PostId;
 use App\Framework\Application\Event\EventBus;
 use App\Content\Domain\PostRepositoryInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use App\Framework\Application\Command\CommandHandler;
 
-final class DraftPostHandler implements MessageHandlerInterface
+final class DraftPostHandler implements CommandHandler
 {
-    public function __construct(
-        private readonly PostRepositoryInterface  $postRepository,
-        private readonly EventBus $eventBus
-    )
+    public function __construct(private readonly PostRepositoryInterface  $postRepository, private readonly EventBus $eventBus)
     {
     }
 

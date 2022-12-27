@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Framework\Application\Command;
-interface AsyncCommand
+interface AsyncCommand extends Command
 {
 
 }
