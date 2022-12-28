@@ -8,10 +8,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class ContentBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-    }
 
     protected function getContainerExtensionClass(): string
     {

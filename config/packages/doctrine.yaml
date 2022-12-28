@@ -17,3 +17,5 @@ doctrine:
          type: xml
          dir: Infrastructure/Doctrine/Mappings
          prefix: App\Content\Domain
+      OutBoxBundle:
+        type: attribute

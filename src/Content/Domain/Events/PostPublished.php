@@ -43,4 +43,12 @@ final class PostPublished implements DomainEvent
         return $this->postContent;
     }
 
+    public function payload(): array
+    {
+        return [
+            'id' => $this->postId,
+            'title' => $this->postTitle,
+            'content' => $this->postContent
+        ];
+    }
 }

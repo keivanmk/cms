@@ -22,9 +22,8 @@ class DoctrinePostRepository extends ServiceEntityRepository implements PostRepo
         return  $this->find($postId);
     }
 
-    public function save(Post $post)
+    public function add(Post $post)
     {
         $this->_em->persist($post);
-        $this->_em->flush();
     }
 }
