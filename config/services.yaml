@@ -24,6 +24,9 @@ services:
 
   # add more service definitions when explicit configuration is needed
   # please note that last definitions always *replace* previous ones
+  App\OutBox\Handlers\OutBoxEventHandler:
+      tags:
+        - { name: messenger.message_handler, bus: outbox.bus }
   _instanceof:
     App\Framework\Application\Command\CommandHandler:
       tags:
@@ -31,3 +34,6 @@ services:
     App\Framework\Application\Event\EventHandler:
       tags:
         - { name: messenger.message_handler, bus: event.bus }
+    App\Framework\Application\Projection\ProjectionHandler:
+      tags:
+        - { name: messenger.message_handler, bus: projection.bus }

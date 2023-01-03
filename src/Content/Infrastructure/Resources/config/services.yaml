@@ -2,3 +2,10 @@ parameters:
 services:
   App\Content\Infrastructure\Doctrine\DoctrinePostRepository: ~
   App\Content\Domain\PostRepositoryInterface: '@App\Content\Infrastructure\Doctrine\DoctrinePostRepository'
+
+  home_page_redis_posts_repository:
+    class: App\Content\Infrastructure\Persistence\Redis\HomePagePostsListRedisRepository
+    arguments:
+      - '@sb_redis.default'
+  App\Content\Application\HomePagePostsList\HomePagePostsListRepository: '@home_page_redis_posts_repository'
+

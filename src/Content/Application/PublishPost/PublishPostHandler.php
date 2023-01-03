@@ -17,7 +17,6 @@ final class PublishPostHandler implements CommandHandler
     public function __construct(
         private readonly PostRepositoryInterface $postRepository,
         private readonly EventBus $eventBus,
-        private readonly EventStore $eventStore
     )
     {
     }
@@ -27,7 +26,6 @@ final class PublishPostHandler implements CommandHandler
         $post = $this->postRepository->ofId(PostId::fromString($publishPostCommand->postId()));
         $post->publish();
         $this->postRepository->add($post);
-        $this->eventStore->add($post->releaseEvents());
         $this->eventBus->notifyAll($post->releaseEvents());
     }
 
