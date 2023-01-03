@@ -8,17 +8,17 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class SymfonyEventBus implements EventBus
 {
 
-    public function __construct(private readonly MessageBusInterface $messageBus)
+    public function __construct(private readonly MessageBusInterface $outboxBus)
     {
     }
 
     public function notify(DomainEvent $domainEvent): void
     {
-        $this->messageBus->dispatch($domainEvent);
+        $this->outboxBus->dispatch($domainEvent);
     }
 
     public function notifyAll(array $domainEvents): void
     {
-        array_walk($domainEvents,fn(DomainEvent $domainEvent) => $this->messageBus->dispatch($domainEvent));
+        array_walk($domainEvents,fn(DomainEvent $domainEvent) => $this->outboxBus->dispatch($domainEvent));
     }
 }

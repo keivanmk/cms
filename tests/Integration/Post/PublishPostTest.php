@@ -22,7 +22,7 @@ class PublishPostTest extends IntegrationTestCase
         $eventBus = \Mockery::spy(EventBus::class);
         $newPostId = PostId::nextId();
         $draftPost = Post::draft($newPostId,$this->faker()->sentence(),$this->faker()->sentence());
-        $postRepository->save($draftPost);
+        $postRepository->add($draftPost);
         $publishCommand = new PublishPostCommand($newPostId);
         $sut = new PublishPostHandler($postRepository,$eventBus);
 

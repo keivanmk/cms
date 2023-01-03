@@ -3,6 +3,7 @@
 namespace App\Content\Application\PublishPost;
 use App\Content\Domain\Post;
 use App\Content\Domain\PostId;
+use App\OutBox\Contracts\EventStore;
 use App\Content\Domain\Events\PostPublished;
 use App\Framework\Application\Event\EventBus;
 use App\Content\Domain\PostRepositoryInterface;
@@ -15,7 +16,7 @@ final class PublishPostHandler implements CommandHandler
 
     public function __construct(
         private readonly PostRepositoryInterface $postRepository,
-        private readonly EventBus $eventBus
+        private readonly EventBus $eventBus,
     )
     {
     }
@@ -24,7 +25,7 @@ final class PublishPostHandler implements CommandHandler
     {
         $post = $this->postRepository->ofId(PostId::fromString($publishPostCommand->postId()));
         $post->publish();
-        $this->postRepository->save($post);
+        $this->postRepository->add($post);
         $this->eventBus->notifyAll($post->releaseEvents());
     }
 

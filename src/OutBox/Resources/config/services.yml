@@ -1,0 +1,5 @@
+parameters:
+services:
+  event.store:
+    class: App\OutBox\Infrastructure\Doctrine\DoctrineEventStore'
+  App\OutBox\Contracts\EventStore: '@event.store'
